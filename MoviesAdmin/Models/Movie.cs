@@ -23,7 +23,6 @@ namespace MoviesAdmin.Models
         public string Rating {  get; set; } = string.Empty; // G, PG, PG-13, R, NC-17
 
         [Required]
-        [Display(Name = "Runtime in minutes")]
         public int Runtime { get; set; } // Minutes
 
         [Display(Name = "Release Date")]
