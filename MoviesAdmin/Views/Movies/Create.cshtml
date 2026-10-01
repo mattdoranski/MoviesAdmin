@@ -32,8 +32,8 @@
             </div>
 
             <div class="mb-3">
-                <label asp-for="Genre" class="form-label"></label>
-                <input asp-for="Genre" class="form-control" />
+                <label asp-for="Genre" class="form-label">Genres (ctrl-click to select multiple)</label>
+                <select asp-for="Genre" class="form-select" multiple asp-items="ViewBag.Genres"></select>
                 <span asp-validation-for="Genre" class="text-danger"></span>
             </div>
 

@@ -43,7 +43,7 @@
                 @Html.DisplayFor(model => item.Director)
             </td>
             <td>
-                @Html.DisplayFor(model => item.Genre)
+                @string.Join(", ", item.Genre)
             </td>
             <td>
                 @Html.DisplayFor(model => item.Rating)

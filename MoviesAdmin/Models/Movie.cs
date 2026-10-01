@@ -15,8 +15,7 @@ namespace MoviesAdmin.Models
         public string Synopsis { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Please provide a genre")]
-        [StringLength(100)]
-        public string Genre {  get; set; } = string.Empty;
+        public List<string> Genre { get; set; } = new();
 
         [Required(ErrorMessage = "Please select a rating")]
         [RegularExpression("^(G|PG|PG-13|R|NC-17)$", ErrorMessage = "Rating must be G, PG, PG-13, R, or NC-17.")]

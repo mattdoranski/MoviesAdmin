@@ -10,6 +10,10 @@ public class MoviesController : Controller
 
     private static string[] Ratings = { "G", "PG", "PG-13", "R", "NC-17" };
 
+    private static string[] Genres = { "Action", "Comedy", "Drama", "Adventure", "Thriller", 
+        "Animation", "Horror", "Sci-Fi", "Fantasy", "Crime", "Family", "Mystery", "Romance", 
+        "Musical", "Biography", "Documentary", "History", "Sport", "Western", "War" };
+
     public MoviesController(MoviesAdminContext context)
     {
         _context = context;
@@ -42,6 +46,7 @@ public class MoviesController : Controller
     // GET: MOVIES/Create
     public IActionResult Create()
     {
+        ViewBag.Genres = new SelectList(Genres);
         ViewBag.Ratings = new SelectList(Ratings);
         return View();
     }
@@ -59,6 +64,7 @@ public class MoviesController : Controller
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        ViewBag.Genres = new SelectList(Genres, movie.Genre);
         ViewBag.Ratings = new SelectList(Ratings, movie.Rating);
         return View(movie);
     }
@@ -76,6 +82,7 @@ public class MoviesController : Controller
         {
             return NotFound();
         }
+        ViewBag.Genres = new SelectList(Genres);
         ViewBag.Ratings = new SelectList(Ratings);
         return View(movie);
     }
@@ -112,6 +119,7 @@ public class MoviesController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
+        ViewBag.Genres = new SelectList(Genres, movie.Genre);
         ViewBag.Ratings = new SelectList(Ratings, movie.Rating);
         return View(movie);
     }
