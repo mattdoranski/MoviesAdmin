@@ -24,6 +24,11 @@
                 <span asp-validation-for="Synopsis" class="text-danger"></span>
             </div>
             <div class="mb-3">
+                <label asp-for="Director" class="form-label"></label>
+                <input asp-for="Director" class="form-control" />
+                <span asp-validation-for="Director" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
                 <label asp-for="Genre" class="form-label"></label>
                 <input asp-for="Genre" class="form-control" />
                 <span asp-validation-for="Genre" class="text-danger"></span>
@@ -34,7 +39,7 @@
                 <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="Runtime" class="form-label"></label>
+                <label asp-for="Runtime" class="form-label">Runtime in minutes</label>
                 <input asp-for="Runtime" class="form-control" />
                 <span asp-validation-for="Runtime" class="text-danger"></span>
             </div>
@@ -42,11 +47,6 @@
                 <label asp-for="ReleaseDate" class="form-label"></label>
                 <input asp-for="ReleaseDate" class="form-control" />
                 <span asp-validation-for="ReleaseDate" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Director" class="form-label"></label>
-                <input asp-for="Director" class="form-control" />
-                <span asp-validation-for="Director" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <input type="submit" value="Save" class="btn btn-primary" />

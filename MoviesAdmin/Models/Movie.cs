@@ -31,5 +31,15 @@ namespace MoviesAdmin.Models
 
         [Required]
         public string Director { get; set; } = string.Empty;
+
+        public string RuntimeHours //Format runtime for hour/minute display
+        {
+            get
+            {
+                int hours = Runtime / 60;
+                int mins = Runtime % 60;
+                return $"{hours}h {mins}min";
+            }
+        }
     }
 }
