@@ -15,9 +15,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
-            @* <th>
-                @Html.DisplayNameFor(model => model.Synopsis)
-            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.Director)
             </th>
@@ -37,14 +34,11 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.OrderByDescending(item => item.ReleaseDate)) {
         <tr>
             <td>
                 @Html.DisplayFor(model => item.Title)
             </td>
-            @* <td>
-                @Html.DisplayFor(model => item.Synopsis)
-            </td> *@
             <td>
                 @Html.DisplayFor(model => item.Director)
             </td>

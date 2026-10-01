@@ -35,7 +35,7 @@
             </div>
             <div class="mb-3">
                 <label asp-for="Rating" class="form-label"></label>
-                <input asp-for="Rating" class="form-control" />
+                <select asp-for="Rating" class="form-select" asp-items="ViewBag.Ratings"></select>
                 <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
             <div class="mb-3">

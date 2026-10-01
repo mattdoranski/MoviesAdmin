@@ -6,30 +6,31 @@ namespace MoviesAdmin.Models
     {
         public int ID { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please provide a title")]
         [StringLength(100)]
         public string Title { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "Please provide a synopsis")]
         [StringLength(500)]
         public string Synopsis { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "Please provide a genre")]
         [StringLength(100)]
         public string Genre {  get; set; } = string.Empty;
 
-        [Required]
-        [StringLength(5)] //Max length 5 chars (pg-13/nc-17)
+        [Required(ErrorMessage = "Please select a rating")]
+        [RegularExpression("^(G|PG|PG-13|R|NC-17)$", ErrorMessage = "Rating must be G, PG, PG-13, R, or NC-17.")]
         public string Rating {  get; set; } = string.Empty; // G, PG, PG-13, R, NC-17
 
-        [Required]
+        [Required(ErrorMessage = "Please provide a runtime in minutes")]
         public int Runtime { get; set; } // Minutes
 
+        [Required(ErrorMessage = "Please select a release date")]
         [Display(Name = "Release Date")]
         [DataType(DataType.Date)]
         public DateOnly ReleaseDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please provide a director")]
         public string Director { get; set; } = string.Empty;
 
         public string RuntimeHours //Format runtime for hour/minute display

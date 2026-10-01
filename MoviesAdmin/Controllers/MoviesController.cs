@@ -1,11 +1,14 @@
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoviesAdmin.Models;
 
 public class MoviesController : Controller
 {
     private readonly MoviesAdminContext _context;
+
+    private static string[] Ratings = { "G", "PG", "PG-13", "R", "NC-17" };
 
     public MoviesController(MoviesAdminContext context)
     {
@@ -39,6 +42,7 @@ public class MoviesController : Controller
     // GET: MOVIES/Create
     public IActionResult Create()
     {
+        ViewBag.Ratings = new SelectList(Ratings);
         return View();
     }
 
@@ -55,6 +59,7 @@ public class MoviesController : Controller
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        ViewBag.Ratings = new SelectList(Ratings, movie.Rating);
         return View(movie);
     }
 
@@ -71,6 +76,7 @@ public class MoviesController : Controller
         {
             return NotFound();
         }
+        ViewBag.Ratings = new SelectList(Ratings);
         return View(movie);
     }
 
@@ -106,6 +112,7 @@ public class MoviesController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
+        ViewBag.Ratings = new SelectList(Ratings, movie.Rating);
         return View(movie);
     }
 
