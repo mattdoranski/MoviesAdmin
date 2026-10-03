@@ -5,7 +5,12 @@ var connectionString = builder.Configuration.GetConnectionString("MoviesAdminCon
 builder.Services.AddDbContext<MoviesAdminContext>(options => options.UseSqlServer(connectionString));
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    //Change message when user leaves empty
+    options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
+        _ => "This field is required");
+});
 
 var app = builder.Build();
 

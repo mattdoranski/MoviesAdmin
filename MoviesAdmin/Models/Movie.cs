@@ -14,14 +14,14 @@ namespace MoviesAdmin.Models
         [StringLength(500, ErrorMessage = "Maximum sysnopsis character length is 500")]
         public string Synopsis { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Please provide a genre")]
+        [MinLength(1, ErrorMessage = "Please provide a genre")]
         public List<string> Genre { get; set; } = new();
 
-        [Required(ErrorMessage = "Please select a rating")]
-        [RegularExpression("^(G|PG|PG-13|R|NC-17)$", ErrorMessage = "Rating must be G, PG, PG-13, R, or NC-17.")] // MPA film rating
-        public string Rating {  get; set; } = string.Empty; 
+        [Required(ErrorMessage = "Please select a rating")] 
+        public string Rating {  get; set; } = string.Empty; // MPA film rating
 
         [Required(ErrorMessage = "Please provide a runtime in minutes")]
+        [Range(1,900, ErrorMessage = "Runtime must be between 1 and 900 minutes")] // 900 is just over longest listed movie on wikipedia (Resan)
         public int Runtime { get; set; } // Minutes
 
         [Required(ErrorMessage = "Please select a release date")]
