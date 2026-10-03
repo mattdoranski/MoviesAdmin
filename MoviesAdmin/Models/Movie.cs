@@ -7,29 +7,30 @@ namespace MoviesAdmin.Models
         public int ID { get; set; }
 
         [Required(ErrorMessage = "Please provide a title")]
-        [StringLength(100)]
+        [StringLength(100, ErrorMessage = "Maximum title character length is 100")]
         public string Title { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Please provide a synopsis")]
-        [StringLength(500)]
+        [StringLength(500, ErrorMessage = "Maximum sysnopsis character length is 500")]
         public string Synopsis { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Please provide a genre")]
         public List<string> Genre { get; set; } = new();
 
         [Required(ErrorMessage = "Please select a rating")]
-        [RegularExpression("^(G|PG|PG-13|R|NC-17)$", ErrorMessage = "Rating must be G, PG, PG-13, R, or NC-17.")]
-        public string Rating {  get; set; } = string.Empty; // G, PG, PG-13, R, NC-17
+        [RegularExpression("^(G|PG|PG-13|R|NC-17)$", ErrorMessage = "Rating must be G, PG, PG-13, R, or NC-17.")] // MPA film rating
+        public string Rating {  get; set; } = string.Empty; 
 
         [Required(ErrorMessage = "Please provide a runtime in minutes")]
         public int Runtime { get; set; } // Minutes
 
         [Required(ErrorMessage = "Please select a release date")]
         [Display(Name = "Release Date")]
-        [DataType(DataType.Date)]
+        [DataType(DataType.Date)] // Format as calender in create/edit view
         public DateOnly ReleaseDate { get; set; }
 
         [Required(ErrorMessage = "Please provide a director")]
+        [StringLength(100, ErrorMessage = "Maximum name character length is 100")]
         public string Director { get; set; } = string.Empty;
 
         public string RuntimeHours //Format runtime for hour/minute display
