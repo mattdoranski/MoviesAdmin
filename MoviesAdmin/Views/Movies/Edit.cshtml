@@ -7,7 +7,7 @@
 <h1>Edit Film</h1>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID" />
@@ -47,14 +47,11 @@
                 <span asp-validation-for="ReleaseDate" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" /> |
+                <a asp-action="Index">Back to Browse</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
