@@ -17,7 +17,7 @@ namespace MoviesAdmin.Models
         [MinLength(1, ErrorMessage = "Please provide a genre")]
         public List<string> Genre { get; set; } = new();
 
-        [Required(ErrorMessage = "Please select a rating")] 
+        [Required(ErrorMessage = "Please select a rating")]
         public string Rating {  get; set; } = string.Empty; // MPA film rating
 
         [Required(ErrorMessage = "Please provide a runtime in minutes")]
@@ -33,13 +33,13 @@ namespace MoviesAdmin.Models
         [StringLength(100, ErrorMessage = "Maximum name character length is 100")]
         public string Director { get; set; } = string.Empty;
 
-        public string RuntimeHours //Format runtime for hour/minute display
+        public string RuntimeHours //Format runtime for hour/minute display //DONT MIGRATE
         {
             get
             {
                 int hours = Runtime / 60;
                 int mins = Runtime % 60;
-                return $"{hours}h {mins}min";
+                return $"{hours}h {mins}min"; 
             }
         }
     }
