@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MoviesAdmin.Models
 {
@@ -33,6 +34,9 @@ namespace MoviesAdmin.Models
         [StringLength(100, ErrorMessage = "Maximum name character length is 100")]
         public string Director { get; set; } = string.Empty;
 
+        public string ImageUrl { get; set; } = string.Empty;
+
+        [NotMapped]
         public string RuntimeHours //Format runtime for hour/minute display //DONT MIGRATE
         {
             get

@@ -1,6 +1,6 @@
 ﻿namespace MoviesAdmin.Models
 {
-    public class CriticReview
+    public class AudienceRating
     {
         public int ID { get; set; }
 

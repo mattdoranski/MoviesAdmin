@@ -10,7 +10,7 @@
 
         public bool IsPublished { get; set; }
 
-        public string CreatedBy { get; set; } = string.Empty
+        public string CreatedBy { get; set; } = string.Empty;
 
         public DateOnly CreatedDate { get; set; }
     }

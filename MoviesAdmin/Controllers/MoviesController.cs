@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoviesAdmin.Models;
+using MoviesAdmin.Services;
 
 public class MoviesController : Controller
 {
     private readonly MoviesAdminContext _context;
+    private readonly AzureStorageService _blobService;
 
     private static string[] Ratings = { "G", "PG", "PG-13", "R", "NC-17" };
 
@@ -14,9 +16,10 @@ public class MoviesController : Controller
         "Animation", "Horror", "Sci-Fi", "Fantasy", "Crime", "Family", "Mystery", "Romance", 
         "Musical", "Biography", "Documentary", "History", "Sport", "Western", "War" };
 
-    public MoviesController(MoviesAdminContext context)
+    public MoviesController(MoviesAdminContext context, AzureStorageService blobService)
     {
         _context = context;
+        _blobService = blobService;
     }
 
     // GET: MOVIES
@@ -56,14 +59,25 @@ public class MoviesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("ID,Title,Synopsis,Genre,Rating,Runtime,ReleaseDate,Director")] Movie movie)
+    public async Task<IActionResult> Create([Bind("ID,Title,Synopsis,Genre,Rating,Runtime,ReleaseDate,Director")] Movie movie, IFormFile imageFile) // Collect inputs and file inputs
     {
         if (ModelState.IsValid)
         {
+            // save file in azure storage
+            string imageUrl = await _blobService.UploadFileAsync(imageFile, imageFile.FileName);
+
+            // save image url in record
+            movie.ImageUrl = imageUrl;
+
+            // save record in databsae
             _context.Add(movie);
             await _context.SaveChangesAsync();
+
+            // redirect to index after creating movie
             return RedirectToAction(nameof(Index));
         }
+
+        // select from genre/rating list
         ViewBag.Genres = new SelectList(Genres, movie.Genre);
         ViewBag.Ratings = new SelectList(Ratings, movie.Rating);
         return View(movie);
