@@ -10,7 +10,7 @@ public class MoviesController : Controller
     private readonly MoviesAdminContext _context;
     private readonly AzureStorageService _blobService;
 
-    private static string[] Ratings = { "G", "PG", "PG-13", "R", "NC-17" };
+    //private static string[] Ratings = { "G", "PG", "PG-13", "R", "NC-17" };
 
     //private static string[] Genres = { "Action", "Comedy", "Drama", "Adventure", "Thriller", 
     //    "Animation", "Horror", "Sci-Fi", "Fantasy", "Crime", "Family", "Mystery", "Romance", 
@@ -27,6 +27,7 @@ public class MoviesController : Controller
     {
         List<Movie> movies = await _context.Movie
             .Include(t => t.Genre)
+            .Include(t => t.AudienceRating)
             .ToListAsync();
 
         return View(movies);
@@ -42,6 +43,7 @@ public class MoviesController : Controller
 
         var movie = await _context.Movie
             .Include(m => m.Genre)
+            .Include(m => m.AudienceRating)
             .FirstOrDefaultAsync(m => m.Id == id);
         if (movie == null)
         {
@@ -55,10 +57,13 @@ public class MoviesController : Controller
     public IActionResult Create()
     {
         //ViewBag.Genres = new SelectList(Genres);
-        ViewBag.Ratings = new SelectList(Ratings);
+        //ViewBag.Ratings = new SelectList(Ratings);
 
         var genres = _context.Genre.ToList();
         ViewBag.GenreId = new SelectList(genres, "Id", "Title");
+
+        var ratings = _context.AudienceRating.ToList();
+        ViewBag.AudienceRatingId = new SelectList(ratings, "Id", "Title");
 
         return View();
     }
@@ -68,7 +73,7 @@ public class MoviesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,Title,Synopsis,Genre,Rating,Runtime,ReleaseDate,Director,GenreId")] Movie movie, IFormFile? imageFile) // Collect inputs and file inputs
+    public async Task<IActionResult> Create([Bind("Id,Title,Synopsis,Runtime,ReleaseDate,Director,GenreId,AudienceRatingId")] Movie movie, IFormFile? imageFile) // Collect inputs and file inputs
     {
         if (ModelState.IsValid)
         {
@@ -88,7 +93,7 @@ public class MoviesController : Controller
 
         // select from genre/rating list
         //ViewBag.Genres = new SelectList(Genres, movie.Genre);
-        ViewBag.Ratings = new SelectList(Ratings, movie.Rating);
+        //ViewBag.Ratings = new SelectList(Ratings, movie.Rating);
         return View(movie);
     }
 
@@ -106,10 +111,13 @@ public class MoviesController : Controller
             return NotFound();
         }
         //ViewBag.Genres = new SelectList(Genres);
-        ViewBag.Ratings = new SelectList(Ratings);
+        //ViewBag.Ratings = new SelectList(Ratings);
 
         var genres = _context.Genre.ToList();
         ViewBag.GenreId = new SelectList(genres, "Id", "Title");
+
+        var ratings = _context.AudienceRating.ToList();
+        ViewBag.AudienceRatingId = new SelectList(ratings, "Id", "Title");
 
         return View(movie);
     }
@@ -119,7 +127,7 @@ public class MoviesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Synopsis,Genre,Rating,Runtime,ReleaseDate,Director,GenreId")] Movie movie)
+    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Synopsis,Runtime,ReleaseDate,Director,GenreId,AudienceRatingId")] Movie movie)
     {
         if (id != movie.Id)
         {
@@ -147,10 +155,13 @@ public class MoviesController : Controller
             return RedirectToAction(nameof(Index));
         }
         //ViewBag.Genres = new SelectList(Genres, movie.Genre);
-        ViewBag.Ratings = new SelectList(Ratings, movie.Rating);
+        //ViewBag.Ratings = new SelectList(Ratings, movie.Rating);
 
         var genres = _context.Genre.ToList();
         ViewBag.GenreId = new SelectList(genres, "Id", "Title");
+
+        var ratings = _context.AudienceRating.ToList();
+        ViewBag.AudienceRatingId = new SelectList(ratings, "Id", "Title");
 
         return View(movie);
     }
@@ -173,6 +184,9 @@ public class MoviesController : Controller
 
         var genres = _context.Genre.ToList();
         ViewBag.GenreId = new SelectList(genres, "Id", "Title");
+
+        var ratings = _context.AudienceRating.ToList();
+        ViewBag.AudienceRatingId = new SelectList(ratings, "Id", "Title");
 
         return View(movie);
     }

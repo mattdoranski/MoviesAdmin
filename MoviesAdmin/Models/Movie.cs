@@ -10,11 +10,20 @@ namespace MoviesAdmin.Models
         public int Id { get; set; }
 
         //Foreign key to Genre
+        [Display(Name = "Genre")]
         public int GenreId { get; set; }
+
+        // Foreign key to AudienceRating
+        [Display(Name = "Rating")]
+        public int AudienceRatingId { get; set; }
 
         // Navigation property
         [ValidateNever]
         public Genre Genre { get; set; } = null!;
+
+        // Navigation property
+        [ValidateNever]
+        public AudienceRating AudienceRating { get; set; } = null!;
 
         [Required(ErrorMessage = "Please provide a title")]
         [StringLength(100, ErrorMessage = "Maximum title character length is 100")]
@@ -27,8 +36,8 @@ namespace MoviesAdmin.Models
         //[MinLength(1, ErrorMessage = "Please provide a genre")]
         //public List<string> Genre { get; set; } = new();
 
-        [Required(ErrorMessage = "Please select a rating")]
-        public string Rating {  get; set; } = string.Empty; // MPA film rating
+        //[Required(ErrorMessage = "Please select a rating")]
+        //public string Rating { get; set; } = string.Empty; // MPA film rating
 
         [Required(ErrorMessage = "Please provide a runtime in minutes")]
         [Range(1,900, ErrorMessage = "Runtime must be between 1 and 900 minutes")] // 900 is just over longest listed movie on wikipedia (Resan)

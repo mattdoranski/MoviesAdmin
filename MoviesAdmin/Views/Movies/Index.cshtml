@@ -25,7 +25,7 @@
                 @Html.DisplayNameFor(model => model.GenreId)
             </th> 
             <th>
-                @Html.DisplayNameFor(model => model.Rating)
+                @Html.DisplayNameFor(model => model.AudienceRatingId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Runtime)
@@ -52,7 +52,7 @@
                 @Html.DisplayFor(model => item.Genre.Title)
             </td>
             <td>
-                @Html.DisplayFor(model => item.Rating)
+                @Html.DisplayFor(model => item.AudienceRating.Title)
             </td>
             <td>
                 @Html.DisplayFor(model => item.RuntimeHours)
