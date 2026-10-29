@@ -1,11 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MoviesAdmin.Models
 {
     public class Movie
     {
-        public int ID { get; set; }
+        // Primary key
+        public int Id { get; set; }
+
+        //Foreign key to Genre
+        public int GenreId { get; set; }
+
+        // Navigation property
+        [ValidateNever]
+        public Genre Genre { get; set; } = null!;
 
         [Required(ErrorMessage = "Please provide a title")]
         [StringLength(100, ErrorMessage = "Maximum title character length is 100")]
@@ -15,8 +24,8 @@ namespace MoviesAdmin.Models
         [StringLength(500, ErrorMessage = "Maximum sysnopsis character length is 500")]
         public string Synopsis { get; set; } = string.Empty;
 
-        [MinLength(1, ErrorMessage = "Please provide a genre")]
-        public List<string> Genre { get; set; } = new();
+        //[MinLength(1, ErrorMessage = "Please provide a genre")]
+        //public List<string> Genre { get; set; } = new();
 
         [Required(ErrorMessage = "Please select a rating")]
         public string Rating {  get; set; } = string.Empty; // MPA film rating

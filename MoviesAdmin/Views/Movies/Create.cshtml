@@ -31,9 +31,11 @@
             </div>
 
             <div class="mb-3">
-                <label asp-for="Genre" class="form-label">Genres (ctrl-click to select multiple)</label>
-                <select asp-for="Genre" class="form-select" multiple asp-items="ViewBag.Genres"></select>
-                <span asp-validation-for="Genre" class="text-danger"></span>
+                <label asp-for="GenreId" class="control-label"></label>
+                <select asp-for="GenreId" class="form-select" asp-items="ViewBag.GenreId">
+                    <option value="">-- Select Genre --</option>
+                </select>
+                <span asp-validation-for="GenreId" class="text-danger"></span>
             </div>
 
             <div class="mb-3">

@@ -15,7 +15,7 @@ namespace MoviesAdmin.Migrations
                 name: "Movie",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Synopsis = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -27,7 +27,7 @@ namespace MoviesAdmin.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Movie", x => x.ID);
+                    table.PrimaryKey("PK_Movie", x => x.Id);
                 });
         }
 

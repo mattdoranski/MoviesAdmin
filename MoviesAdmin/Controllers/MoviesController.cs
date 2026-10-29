@@ -12,9 +12,9 @@ public class MoviesController : Controller
 
     private static string[] Ratings = { "G", "PG", "PG-13", "R", "NC-17" };
 
-    private static string[] Genres = { "Action", "Comedy", "Drama", "Adventure", "Thriller", 
-        "Animation", "Horror", "Sci-Fi", "Fantasy", "Crime", "Family", "Mystery", "Romance", 
-        "Musical", "Biography", "Documentary", "History", "Sport", "Western", "War" };
+    //private static string[] Genres = { "Action", "Comedy", "Drama", "Adventure", "Thriller", 
+    //    "Animation", "Horror", "Sci-Fi", "Fantasy", "Crime", "Family", "Mystery", "Romance", 
+    //    "Musical", "Biography", "Documentary", "History", "Sport", "Western", "War" };
 
     public MoviesController(MoviesAdminContext context, AzureStorageService blobService)
     {
@@ -25,7 +25,11 @@ public class MoviesController : Controller
     // GET: MOVIES
     public async Task<IActionResult> Index()    
     {
-        return View(await _context.Movie.ToListAsync());
+        List<Movie> movies = await _context.Movie
+            .Include(t => t.Genre)
+            .ToListAsync();
+
+        return View(movies);
     }
 
     // GET: MOVIES/Details/5
@@ -37,7 +41,8 @@ public class MoviesController : Controller
         }
 
         var movie = await _context.Movie
-            .FirstOrDefaultAsync(m => m.ID == id);
+            .Include(m => m.Genre)
+            .FirstOrDefaultAsync(m => m.Id == id);
         if (movie == null)
         {
             return NotFound();
@@ -49,8 +54,12 @@ public class MoviesController : Controller
     // GET: MOVIES/Create
     public IActionResult Create()
     {
-        ViewBag.Genres = new SelectList(Genres);
+        //ViewBag.Genres = new SelectList(Genres);
         ViewBag.Ratings = new SelectList(Ratings);
+
+        var genres = _context.Genre.ToList();
+        ViewBag.GenreId = new SelectList(genres, "Id", "Title");
+
         return View();
     }
 
@@ -59,7 +68,7 @@ public class MoviesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("ID,Title,Synopsis,Genre,Rating,Runtime,ReleaseDate,Director")] Movie movie, IFormFile imageFile) // Collect inputs and file inputs
+    public async Task<IActionResult> Create([Bind("Id,Title,Synopsis,Genre,Rating,Runtime,ReleaseDate,Director,GenreId")] Movie movie, IFormFile? imageFile) // Collect inputs and file inputs
     {
         if (ModelState.IsValid)
         {
@@ -78,7 +87,7 @@ public class MoviesController : Controller
         }
 
         // select from genre/rating list
-        ViewBag.Genres = new SelectList(Genres, movie.Genre);
+        //ViewBag.Genres = new SelectList(Genres, movie.Genre);
         ViewBag.Ratings = new SelectList(Ratings, movie.Rating);
         return View(movie);
     }
@@ -96,8 +105,12 @@ public class MoviesController : Controller
         {
             return NotFound();
         }
-        ViewBag.Genres = new SelectList(Genres);
+        //ViewBag.Genres = new SelectList(Genres);
         ViewBag.Ratings = new SelectList(Ratings);
+
+        var genres = _context.Genre.ToList();
+        ViewBag.GenreId = new SelectList(genres, "Id", "Title");
+
         return View(movie);
     }
 
@@ -106,9 +119,9 @@ public class MoviesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("ID,Title,Synopsis,Genre,Rating,Runtime,ReleaseDate,Director")] Movie movie)
+    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Synopsis,Genre,Rating,Runtime,ReleaseDate,Director,GenreId")] Movie movie)
     {
-        if (id != movie.ID)
+        if (id != movie.Id)
         {
             return NotFound();
         }
@@ -122,7 +135,7 @@ public class MoviesController : Controller
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MovieExists(movie.ID))
+                if (!MovieExists(movie.Id))
                 {
                     return NotFound();
                 }
@@ -133,8 +146,12 @@ public class MoviesController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
-        ViewBag.Genres = new SelectList(Genres, movie.Genre);
+        //ViewBag.Genres = new SelectList(Genres, movie.Genre);
         ViewBag.Ratings = new SelectList(Ratings, movie.Rating);
+
+        var genres = _context.Genre.ToList();
+        ViewBag.GenreId = new SelectList(genres, "Id", "Title");
+
         return View(movie);
     }
 
@@ -147,11 +164,15 @@ public class MoviesController : Controller
         }
 
         var movie = await _context.Movie
-            .FirstOrDefaultAsync(m => m.ID == id);
+            .Include(m => m.Genre)
+            .FirstOrDefaultAsync(m => m.Id == id);
         if (movie == null)
         {
             return NotFound();
         }
+
+        var genres = _context.Genre.ToList();
+        ViewBag.GenreId = new SelectList(genres, "Id", "Title");
 
         return View(movie);
     }
@@ -173,6 +194,6 @@ public class MoviesController : Controller
 
     private bool MovieExists(int? id)
     {
-        return _context.Movie.Any(e => e.ID == id);
+        return _context.Movie.Any(e => e.Id == id);
     }
 }
