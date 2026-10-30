@@ -10,12 +10,6 @@ public class MoviesController : Controller
     private readonly MoviesAdminContext _context;
     private readonly AzureStorageService _blobService;
 
-    //private static string[] Ratings = { "G", "PG", "PG-13", "R", "NC-17" };
-
-    //private static string[] Genres = { "Action", "Comedy", "Drama", "Adventure", "Thriller", 
-    //    "Animation", "Horror", "Sci-Fi", "Fantasy", "Crime", "Family", "Mystery", "Romance", 
-    //    "Musical", "Biography", "Documentary", "History", "Sport", "Western", "War" };
-
     public MoviesController(MoviesAdminContext context, AzureStorageService blobService)
     {
         _context = context;
@@ -56,9 +50,6 @@ public class MoviesController : Controller
     // GET: MOVIES/Create
     public IActionResult Create()
     {
-        //ViewBag.Genres = new SelectList(Genres);
-        //ViewBag.Ratings = new SelectList(Ratings);
-
         var genres = _context.Genre.ToList();
         ViewBag.GenreId = new SelectList(genres, "Id", "Title");
 
@@ -90,10 +81,6 @@ public class MoviesController : Controller
             // redirect to index after creating movie
             return RedirectToAction(nameof(Index));
         }
-
-        // select from genre/rating list
-        //ViewBag.Genres = new SelectList(Genres, movie.Genre);
-        //ViewBag.Ratings = new SelectList(Ratings, movie.Rating);
         return View(movie);
     }
 
@@ -110,8 +97,6 @@ public class MoviesController : Controller
         {
             return NotFound();
         }
-        //ViewBag.Genres = new SelectList(Genres);
-        //ViewBag.Ratings = new SelectList(Ratings);
 
         var genres = _context.Genre.ToList();
         ViewBag.GenreId = new SelectList(genres, "Id", "Title");
@@ -154,8 +139,6 @@ public class MoviesController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
-        //ViewBag.Genres = new SelectList(Genres, movie.Genre);
-        //ViewBag.Ratings = new SelectList(Ratings, movie.Rating);
 
         var genres = _context.Genre.ToList();
         ViewBag.GenreId = new SelectList(genres, "Id", "Title");
