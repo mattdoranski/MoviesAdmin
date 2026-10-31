@@ -6,9 +6,12 @@
 
 <h1>List of Films</h1>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary" role="button">Add New Film</a>
-</p>
+@if (User.IsInRole("admin"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-primary" role="button">Add New Film</a>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -60,11 +63,20 @@
             <td>
                 @Html.DisplayFor(model => item.ReleaseDate)
             </td>
-            <td>
-                <a asp-action="Details" class="btn btn-info btn-sm" role="button" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Edit" class="btn btn-secondary btn-sm" role="button" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" class="btn btn-warning btn-sm" role="button" asp-route-id="@item.Id">Delete</a>
-            </td>
+            @if (User.IsInRole("admin"))
+            {
+                <td>
+                    <a asp-action="Details" class="btn btn-info btn-sm" role="button" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Edit" class="btn btn-secondary btn-sm" role="button" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" class="btn btn-warning btn-sm" role="button" asp-route-id="@item.Id">Delete</a>
+                </td>
+            }
+            else
+            {
+                <td>
+                    <a asp-action="Details" class="btn btn-info btn-sm" role="button" asp-route-id="@item.Id">Details</a>
+                </td>
+            }
         </tr>
 }
     </tbody>

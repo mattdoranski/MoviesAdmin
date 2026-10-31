@@ -1,10 +1,12 @@
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoviesAdmin.Models;
 using MoviesAdmin.Services;
 
+[Authorize]
 public class MoviesController : Controller
 {
     private readonly MoviesAdminContext _context;
@@ -48,6 +50,7 @@ public class MoviesController : Controller
     }
 
     // GET: MOVIES/Create
+    [Authorize(Roles = "admin")]
     public IActionResult Create()
     {
         var genres = _context.Genre.ToList();
@@ -64,6 +67,7 @@ public class MoviesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> Create([Bind("Id,Title,Synopsis,Runtime,ReleaseDate,Director,GenreId,AudienceRatingId")] Movie movie, IFormFile? imageFile) // Collect inputs and file inputs
     {
         if (ModelState.IsValid)
@@ -85,6 +89,7 @@ public class MoviesController : Controller
     }
 
     // GET: MOVIES/Edit/5
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
@@ -112,6 +117,7 @@ public class MoviesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Synopsis,Runtime,ReleaseDate,Director,GenreId,AudienceRatingId")] Movie movie)
     {
         if (id != movie.Id)
@@ -150,6 +156,7 @@ public class MoviesController : Controller
     }
 
     // GET: MOVIES/Delete/5
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
@@ -177,6 +184,7 @@ public class MoviesController : Controller
     // POST: MOVIES/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> DeleteConfirmed(int? id)
     {
         var movie = await _context.Movie.FindAsync(id);
