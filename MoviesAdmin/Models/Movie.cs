@@ -30,7 +30,7 @@ namespace MoviesAdmin.Models
 
         // Navigation property
         [ValidateNever]
-        public CriticReview CriticReview { get; set; } = null!;
+        public List<CriticReview> CriticReview { get; set; } = null!;
 
         [Required(ErrorMessage = "Please provide a title")]
         [StringLength(100, ErrorMessage = "Maximum title character length is 100")]

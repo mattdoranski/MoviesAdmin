@@ -13,11 +13,15 @@ public class CriticReviewsController : Controller
         _context = context;
     }
 
+    // GET: CriticReviews
     public async Task<IActionResult> Index()
     {
-        return View(await _context.CriticReview.ToListAsync());
+        return View(await _context.CriticReview
+            .Include(c => c.Movie)
+            .ToListAsync());
     }
 
+    // GET: CriticReviews/Details/5
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null)
@@ -26,6 +30,7 @@ public class CriticReviewsController : Controller
         }
 
         var criticReview = await _context.CriticReview
+            .Include(c => c.Movie)
             .FirstOrDefaultAsync(c => c.Id == id);
         if (criticReview == null)
         {
@@ -35,11 +40,13 @@ public class CriticReviewsController : Controller
         return View(criticReview);
     }
 
+    // GET: CriticReviews/Create
     public IActionResult Create()
     {
         return View();
     }
 
+    // POST: CriticReviews/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("Id,MovieId,Description,Rating,IsPublished,CreatedBy,CreatedDate")] CriticReview criticReview)
@@ -54,6 +61,7 @@ public class CriticReviewsController : Controller
         return View(criticReview);
     }
 
+    // GET: CriticReviews/Edit/5
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
@@ -70,6 +78,7 @@ public class CriticReviewsController : Controller
         return View(criticReview);
     }
 
+    // POST: CriticReviews/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, [Bind("Id,MovieId,Description,Rating,IsPublished,CreatedBy,CreatedDate")] CriticReview criticReview)
@@ -102,6 +111,7 @@ public class CriticReviewsController : Controller
         return View(criticReview);
     }
 
+    // GET: CriticReviews/Delete/5
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
@@ -110,6 +120,7 @@ public class CriticReviewsController : Controller
         }
 
         var criticReview = await _context.CriticReview
+            .Include(c => c.Movie)
             .FirstOrDefaultAsync(c => c.Id == id);
         if (criticReview == null)
         {
@@ -119,6 +130,7 @@ public class CriticReviewsController : Controller
         return View(criticReview);
     }
 
+    // POST: CriticReviews/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
