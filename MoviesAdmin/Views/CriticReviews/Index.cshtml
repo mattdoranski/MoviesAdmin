@@ -1,0 +1,42 @@
+@model IEnumerable<MoviesAdmin.Models.CriticReview>
+
+@{
+    ViewData["Title"] = "Critic Reviews";
+}
+
+<h1>Critic Reviews</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.MovieId)</th>
+            <th>@Html.DisplayNameFor(model => model.Description)</th>
+            <th>@Html.DisplayNameFor(model => model.Rating)</th>
+            <th>@Html.DisplayNameFor(model => model.IsPublished)</th>
+            <th>@Html.DisplayNameFor(model => model.CreatedBy)</th>
+            <th>@Html.DisplayNameFor(model => model.CreatedDate)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.MovieId)</td>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td>@Html.DisplayFor(modelItem => item.Rating)</td>
+                <td>@Html.DisplayFor(modelItem => item.IsPublished)</td>
+                <td>@Html.DisplayFor(modelItem => item.CreatedBy)</td>
+                <td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

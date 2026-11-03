@@ -17,6 +17,9 @@ namespace MoviesAdmin.Models
         [Display(Name = "Rating")]
         public int AudienceRatingId { get; set; }
 
+        // Foreign key to CriticReview
+        public int CriticReviewId { get; set; }
+
         // Navigation property
         [ValidateNever]
         public Genre Genre { get; set; } = null!;
@@ -24,6 +27,10 @@ namespace MoviesAdmin.Models
         // Navigation property
         [ValidateNever]
         public AudienceRating AudienceRating { get; set; } = null!;
+
+        // Navigation property
+        [ValidateNever]
+        public CriticReview CriticReview { get; set; } = null!;
 
         [Required(ErrorMessage = "Please provide a title")]
         [StringLength(100, ErrorMessage = "Maximum title character length is 100")]

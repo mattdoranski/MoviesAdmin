@@ -2,7 +2,14 @@
 {
     public class CriticReview
     {
+        // primary key
         public int Id { get; set; }
+
+        // foreign key
+        public int MovieId { get; set; }
+
+        // navigation property
+        public Movie Movie { get; set; } = null!;
 
         public string Description { get; set; } = string.Empty;
 
