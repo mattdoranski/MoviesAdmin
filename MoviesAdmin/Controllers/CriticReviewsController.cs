@@ -1,22 +1,36 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
+using MoviesAdmin;
 using MoviesAdmin.Models;
 
-[Authorize(Roles = "admin")]
+[Authorize]
 public class CriticReviewsController : Controller
 {
     private readonly MoviesAdminContext _context;
+
+    // logged in user
+    private string? _userId;
 
     public CriticReviewsController(MoviesAdminContext context)
     {
         _context = context;
     }
 
+    // Called after constructor but before method
+    // userId should no longer be null
+    public override void OnActionExecuting(ActionExecutingContext context)
+    {
+        base.OnActionExecuting(context);
+        _userId = User.GetUserId();
+    }
+
     // GET: CriticReviews
     public async Task<IActionResult> Index()
     {
         return View(await _context.CriticReview
+            .Where(c => c.CreatedBy == _userId)
             .Include(c => c.Movie)
             .ToListAsync());
     }

@@ -17,9 +17,6 @@ namespace MoviesAdmin.Models
         [Display(Name = "Rating")]
         public int AudienceRatingId { get; set; }
 
-        // Foreign key to CriticReview
-        public int CriticReviewId { get; set; }
-
         // Navigation property
         [ValidateNever]
         public Genre Genre { get; set; } = null!;
