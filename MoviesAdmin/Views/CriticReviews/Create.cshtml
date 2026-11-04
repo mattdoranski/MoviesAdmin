@@ -1,20 +1,21 @@
 @model MoviesAdmin.Models.CriticReview
 
 @{
-    ViewData["Title"] = "Create Critic Review";
+    ViewData["Title"] = "Create Review";
 }
 
-<h1>Create Critic Review</h1>
+<h1>Create Review</h1>
 <hr />
 <div class="row">
     <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="mb-3">
+            <input type="hidden" asp-for="MovieId" value="@ViewBag.MovieId" />
+            @* <div class="mb-3">
                 <label asp-for="MovieId" class="form-label"></label>
                 <input asp-for="MovieId" class="form-control" />
                 <span asp-validation-for="MovieId" class="text-danger"></span>
-            </div>
+            </div> *@
             <div class="mb-3">
                 <label asp-for="Description" class="form-label"></label>
                 <textarea asp-for="Description" class="form-control"></textarea>
@@ -28,8 +29,9 @@
             <div class="form-check mb-3">
                 <input asp-for="IsPublished" class="form-check-input" />
                 <label asp-for="IsPublished" class="form-check-label"></label>
+                <div class= "text-muted">Select to publish review and make public</div>
             </div>
-            <div class="mb-3">
+            @* <div class="mb-3">
                 <label asp-for="CreatedBy" class="form-label"></label>
                 <input asp-for="CreatedBy" class="form-control" />
                 <span asp-validation-for="CreatedBy" class="text-danger"></span>
@@ -38,7 +40,7 @@
                 <label asp-for="CreatedDate" class="form-label"></label>
                 <input asp-for="CreatedDate" type="date" class="form-control" />
                 <span asp-validation-for="CreatedDate" class="text-danger"></span>
-            </div>
+            </div> *@
             <button type="submit" class="btn btn-primary">Create</button>
         </form>
     </div>

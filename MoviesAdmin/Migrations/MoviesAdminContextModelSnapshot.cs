@@ -55,7 +55,8 @@ namespace MoviesAdmin.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<bool>("IsPublished")
                         .HasColumnType("bit");
@@ -71,6 +72,27 @@ namespace MoviesAdmin.Migrations
                     b.HasIndex("MovieId");
 
                     b.ToTable("CriticReview");
+                });
+
+            modelBuilder.Entity("MoviesAdmin.Models.Director", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Director");
                 });
 
             modelBuilder.Entity("MoviesAdmin.Models.Genre", b =>
@@ -101,10 +123,8 @@ namespace MoviesAdmin.Migrations
                     b.Property<int>("AudienceRatingId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Director")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<int>("DirectorId")
+                        .HasColumnType("int");
 
                     b.Property<int>("GenreId")
                         .HasColumnType("int");
@@ -133,6 +153,8 @@ namespace MoviesAdmin.Migrations
 
                     b.HasIndex("AudienceRatingId");
 
+                    b.HasIndex("DirectorId");
+
                     b.HasIndex("GenreId");
 
                     b.ToTable("Movie");
@@ -157,6 +179,12 @@ namespace MoviesAdmin.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MoviesAdmin.Models.Director", "Director")
+                        .WithMany("Movies")
+                        .HasForeignKey("DirectorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MoviesAdmin.Models.Genre", "Genre")
                         .WithMany("Movies")
                         .HasForeignKey("GenreId")
@@ -165,10 +193,17 @@ namespace MoviesAdmin.Migrations
 
                     b.Navigation("AudienceRating");
 
+                    b.Navigation("Director");
+
                     b.Navigation("Genre");
                 });
 
             modelBuilder.Entity("MoviesAdmin.Models.AudienceRating", b =>
+                {
+                    b.Navigation("Movies");
+                });
+
+            modelBuilder.Entity("MoviesAdmin.Models.Director", b =>
                 {
                     b.Navigation("Movies");
                 });

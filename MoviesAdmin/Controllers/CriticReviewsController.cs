@@ -55,8 +55,10 @@ public class CriticReviewsController : Controller
     }
 
     // GET: CriticReviews/Create
-    public IActionResult Create()
+    public IActionResult Create(int movieId)
     {
+        ViewBag.MovieId = movieId;
+
         return View();
     }
 
@@ -65,6 +67,10 @@ public class CriticReviewsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("Id,MovieId,Description,Rating,IsPublished,CreatedBy,CreatedDate")] CriticReview criticReview)
     {
+        //Initailize
+        criticReview.CreatedBy = _userId!;
+        criticReview.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
+
         if (ModelState.IsValid)
         {
             _context.Add(criticReview);

@@ -17,17 +17,25 @@ namespace MoviesAdmin.Models
         [Display(Name = "Rating")]
         public int AudienceRatingId { get; set; }
 
-        // Navigation property
+        // foreign key to Director
+        [Display(Name = "Director")]
+        public int DirectorId { get; set; }
+
+        // Navigation property for genre
         [ValidateNever]
         public Genre Genre { get; set; } = null!;
 
-        // Navigation property
+        // Navigation property for audience rating
         [ValidateNever]
         public AudienceRating AudienceRating { get; set; } = null!;
 
-        // Navigation property
+        // Navigation property for critic reviews
         [ValidateNever]
         public List<CriticReview> CriticReview { get; set; } = null!;
+
+        // Navigation property for director
+        [ValidateNever]
+        public Director Director { get; set; } = null!;
 
         [Required(ErrorMessage = "Please provide a title")]
         [StringLength(100, ErrorMessage = "Maximum title character length is 100")]
@@ -52,9 +60,9 @@ namespace MoviesAdmin.Models
         [DataType(DataType.Date)] // Format as calender in create/edit view
         public DateOnly ReleaseDate { get; set; }
 
-        [Required(ErrorMessage = "Please provide a director")]
-        [StringLength(100, ErrorMessage = "Maximum name character length is 100")]
-        public string Director { get; set; } = string.Empty;
+        //[Required(ErrorMessage = "Please provide a director")]
+        //[StringLength(100, ErrorMessage = "Maximum name character length is 100")]
+        //public string Director { get; set; } = string.Empty;
 
         public string ImageUrl { get; set; } = string.Empty;
 
