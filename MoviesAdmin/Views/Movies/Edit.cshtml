@@ -25,9 +25,9 @@
                 <span asp-validation-for="Synopsis" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="Director" class="form-label"></label>
-                <input asp-for="Director" class="form-control" />
-                <span asp-validation-for="Director" class="text-danger"></span>
+                <label asp-for="DirectorId" class="form-label"></label>
+                <select asp-for="DirectorId" class="form-control" asp-items="ViewBag.DirectorId"></select>
+                <span asp-validation-for="DirectorId" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="GenreId" class="control-label"></label>

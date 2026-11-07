@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace MoviesAdmin.Models
 {
@@ -13,6 +14,9 @@ namespace MoviesAdmin.Models
 
         public string Name { get; set; } = string.Empty;
 
+        //TODO: Biography property for director with functionality to display in details view for all users
+
+        [Display(Name = "Picture")]
         public string ImageUrl { get; set; } = string.Empty;
     }
 }

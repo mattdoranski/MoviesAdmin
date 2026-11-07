@@ -2,15 +2,18 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MoviesAdmin.Models;
+using MoviesAdmin.Services;
 
 [Authorize(Roles = "admin")]
 public class DirectorsController : Controller
 {
     private readonly MoviesAdminContext _context;
+    private readonly AzureStorageService _blobService;
 
-    public DirectorsController(MoviesAdminContext context)
+    public DirectorsController(MoviesAdminContext context, AzureStorageService blobService)
     {
         _context = context;
+        _blobService = blobService;
     }
 
     // GET: Directors
@@ -45,10 +48,26 @@ public class DirectorsController : Controller
     // POST: Directors/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Name,ImageUrl")] Director director)
+    public async Task<IActionResult> Create([Bind("Name,ImageUrl")] Director director, IFormFile? imageFile)
     {
+        // Validate if image file is uploaded
+        if (imageFile == null)
+        {
+            ModelState.AddModelError("ImageFile", "Image file upload is required.");
+        }
+
         if (ModelState.IsValid)
         {
+            //Setup for unique filename so files are not overwritten
+            var extension = Path.GetExtension(imageFile!.FileName);
+            var uniqueFileName = $"{Guid.NewGuid()}{extension}";
+
+            // save in azure storage
+            string imageUrl = await _blobService.UploadFileAsync(imageFile, uniqueFileName);
+
+            // save image url in record
+            director.ImageUrl = imageUrl;
+
             _context.Add(director);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

@@ -24,6 +24,7 @@ public class MoviesController : Controller
         List<Movie> movies = await _context.Movie
             .Include(t => t.Genre)
             .Include(t => t.AudienceRating)
+            .Include(t => t.Director)
             .ToListAsync();
 
         return View(movies);
@@ -40,7 +41,9 @@ public class MoviesController : Controller
         var movie = await _context.Movie
             .Include(m => m.Genre)
             .Include(m => m.AudienceRating)
+            .Include(m => m.Director)
             .FirstOrDefaultAsync(m => m.Id == id);
+
         if (movie == null)
         {
             return NotFound();
@@ -59,6 +62,9 @@ public class MoviesController : Controller
         var ratings = _context.AudienceRating.ToList();
         ViewBag.AudienceRatingId = new SelectList(ratings, "Id", "Title");
 
+        var directors = _context.Director.ToList();
+        ViewBag.DirectorId = new SelectList(directors, "Id", "Name", "ImageUrl");
+
         return View();
     }
 
@@ -68,12 +74,22 @@ public class MoviesController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Authorize(Roles = "admin")]
-    public async Task<IActionResult> Create([Bind("Id,Title,Synopsis,Runtime,ReleaseDate,Director,GenreId,AudienceRatingId")] Movie movie, IFormFile? imageFile) // Collect inputs and file inputs
+    public async Task<IActionResult> Create([Bind("Id,Title,Synopsis,Runtime,ReleaseDate,DirectorId,GenreId,AudienceRatingId")] Movie movie, IFormFile? imageFile) // Collect inputs and file inputs
     {
+        // Validate if image file is uploaded
+        if (imageFile == null)
+        {
+            ModelState.AddModelError("ImageFile", "Image file upload is required.");
+        }
+
         if (ModelState.IsValid)
         {
+            //Setup for unique filename so files are not overwritten
+            var extension = Path.GetExtension(imageFile!.FileName);
+            var uniqueFileName = $"{Guid.NewGuid()}{extension}";
+
             // save file in azure storage
-            string imageUrl = await _blobService.UploadFileAsync(imageFile, imageFile.FileName);
+            string imageUrl = await _blobService.UploadFileAsync(imageFile, uniqueFileName);
 
             // save image url in record
             movie.ImageUrl = imageUrl;
@@ -109,6 +125,9 @@ public class MoviesController : Controller
         var ratings = _context.AudienceRating.ToList();
         ViewBag.AudienceRatingId = new SelectList(ratings, "Id", "Title");
 
+        var directors = _context.Director.ToList();
+        ViewBag.DirectorId = new SelectList(directors, "Id", "Name", "ImageUrl");
+
         return View(movie);
     }
 
@@ -118,7 +137,7 @@ public class MoviesController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Authorize(Roles = "admin")]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Synopsis,Runtime,ReleaseDate,Director,GenreId,AudienceRatingId")] Movie movie)
+    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Synopsis,Runtime,ReleaseDate,DirectorId,GenreId,AudienceRatingId")] Movie movie)
     {
         if (id != movie.Id)
         {
@@ -152,6 +171,9 @@ public class MoviesController : Controller
         var ratings = _context.AudienceRating.ToList();
         ViewBag.AudienceRatingId = new SelectList(ratings, "Id", "Title");
 
+        var directors = _context.Director.ToList();
+        ViewBag.DirectorId = new SelectList(directors, "Id", "Name", "ImageUrl");
+
         return View(movie);
     }
 
@@ -177,6 +199,9 @@ public class MoviesController : Controller
 
         var ratings = _context.AudienceRating.ToList();
         ViewBag.AudienceRatingId = new SelectList(ratings, "Id", "Title");
+
+        var directors = _context.Director.ToList();
+        ViewBag.DirectorId = new SelectList(directors, "Id", "Name", "ImageUrl");
 
         return View(movie);
     }
