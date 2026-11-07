@@ -137,7 +137,7 @@ public class MoviesController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Authorize(Roles = "admin")]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Synopsis,Runtime,ReleaseDate,DirectorId,GenreId,AudienceRatingId")] Movie movie)
+    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Synopsis,Runtime,ReleaseDate,DirectorId,GenreId,AudienceRatingId,ImageUrl")] Movie movie, IFormFile? imageFile)
     {
         if (id != movie.Id)
         {
@@ -148,6 +148,14 @@ public class MoviesController : Controller
         {
             try
             {
+                // replace image when new file is uploaded
+                if (imageFile != null && imageFile.Length > 0)
+                {
+                    var extension = Path.GetExtension(imageFile.FileName);
+                    var uniqueFileName = $"{Guid.NewGuid()}{extension}";
+                    movie.ImageUrl = await _blobService.UploadFileAsync(imageFile, uniqueFileName);
+                }
+
                 _context.Update(movie);
                 await _context.SaveChangesAsync();
             }

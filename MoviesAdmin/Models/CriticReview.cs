@@ -16,6 +16,7 @@ namespace MoviesAdmin.Models
         public Movie Movie { get; set; } = null!;
 
         [StringLength(1000, ErrorMessage = "Maximum review character length is 1000")]
+        [Display(Name = "Review")]
         public string Description { get; set; } = string.Empty;
 
         [Range(1, 10, ErrorMessage = "Rating must be between 1 and 10")]
