@@ -96,7 +96,7 @@ public class DirectorsController : Controller
     // POST: Directors/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ImageUrl")] Director director)
+    public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ImageUrl")] Director director, IFormFile? imageFile)
     {
         if (id != director.Id)
         {
@@ -107,6 +107,14 @@ public class DirectorsController : Controller
         {
             try
             {
+                // replace image when new file is uploaded
+                if (imageFile != null && imageFile.Length > 0)
+                {
+                    var extension = Path.GetExtension(imageFile.FileName);
+                    var uniqueFileName = $"{Guid.NewGuid()}{extension}";
+                    director.ImageUrl = await _blobService.UploadFileAsync(imageFile, uniqueFileName);
+                }
+
                 _context.Update(director);
                 await _context.SaveChangesAsync();
             }
