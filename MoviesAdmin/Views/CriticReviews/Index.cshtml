@@ -15,7 +15,6 @@
             <th>@Html.DisplayNameFor(model => model.Movie)</th>
             <th>@Html.DisplayNameFor(model => model.Description)</th>
             <th>@Html.DisplayNameFor(model => model.Rating)</th>
-            <th>@Html.DisplayNameFor(model => model.IsPublished)</th>
             <th>@Html.DisplayNameFor(model => model.CreatedBy)</th>
             <th>@Html.DisplayNameFor(model => model.CreatedDate)</th>
             <th></th>
@@ -28,14 +27,22 @@
                 <td>@Html.DisplayFor(modelItem => item.Movie.Title)</td>
                 <td>@Html.DisplayFor(modelItem => item.Description)</td>
                 <td>@Html.DisplayFor(modelItem => item.Rating)</td>
-                <td>@Html.DisplayFor(modelItem => item.IsPublished)</td>
                 <td>@Html.DisplayFor(modelItem => item.CreatedBy)</td>
                 <td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
+                
+                @if (item.IsPublished)
+                {
+                    <td>
+                        <a asp-action="Details" class="btn btn-info btn-sm" role="button" asp-route-id="@item.Id">Published</a>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a asp-action="Edit" class="btn btn-secondary btn-sm" role="button" asp-route-id="@item.Id">Edit Draft</a> |
+                        <a asp-action="Delete" class="btn btn-warning btn-sm" role="button" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                }
             </tr>
         }
     </tbody>

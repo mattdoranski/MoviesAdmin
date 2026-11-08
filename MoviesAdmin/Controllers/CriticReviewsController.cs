@@ -45,7 +45,7 @@ public class CriticReviewsController : Controller
 
         var criticReview = await _context.CriticReview
             .Include(c => c.Movie)
-            .FirstOrDefaultAsync(c => c.Id == id);
+            .FirstOrDefaultAsync(c => c.Id == id && (c.IsPublished || c.CreatedBy == _userId));
         if (criticReview == null)
         {
             return NotFound();
@@ -78,6 +78,7 @@ public class CriticReviewsController : Controller
             return RedirectToAction(nameof(Index));
         }
 
+        ViewBag.MovieId = criticReview.MovieId;
         return View(criticReview);
     }
 
@@ -89,11 +90,15 @@ public class CriticReviewsController : Controller
             return NotFound();
         }
 
-        var criticReview = await _context.CriticReview.FindAsync(id);
+        var criticReview = await _context.CriticReview
+            .Include(c => c.Movie)
+            .FirstOrDefaultAsync(c => c.Id == id && c.CreatedBy == _userId);
         if (criticReview == null)
         {
             return NotFound();
         }
+
+        if (criticReview.IsPublished) return Forbid();
 
         return View(criticReview);
     }
@@ -128,6 +133,8 @@ public class CriticReviewsController : Controller
             return RedirectToAction(nameof(Index));
         }
 
+        //TODO: Check if EDIT works for published reviews
+
         return View(criticReview);
     }
 
@@ -141,11 +148,13 @@ public class CriticReviewsController : Controller
 
         var criticReview = await _context.CriticReview
             .Include(c => c.Movie)
-            .FirstOrDefaultAsync(c => c.Id == id);
+            .FirstOrDefaultAsync(c => c.Id == id && c.CreatedBy == _userId);
         if (criticReview == null)
         {
             return NotFound();
         }
+
+        if (criticReview.IsPublished) return Forbid();
 
         return View(criticReview);
     }
