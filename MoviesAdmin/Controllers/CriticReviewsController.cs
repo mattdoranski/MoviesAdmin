@@ -55,8 +55,24 @@ public class CriticReviewsController : Controller
     }
 
     // GET: CriticReviews/Create
-    public IActionResult Create(int movieId)
+    public async Task<IActionResult> Create(int movieId)
     {
+        var exists = await _context.CriticReview
+            .FirstOrDefaultAsync(c => c.MovieId == movieId && c.CreatedBy == _userId);
+
+        if (exists != null)
+        {
+            if (!exists.IsPublished)
+            {
+                //Draft exists
+                return RedirectToAction(nameof(Edit), new { id = exists.Id });
+            }
+
+            //Published exists
+            TempData["Error"] = "You have already reviewed this movie.";
+            return RedirectToAction("Details", "Movies", new { id = movieId });
+        }
+
         ViewBag.MovieId = movieId;
 
         return View();
