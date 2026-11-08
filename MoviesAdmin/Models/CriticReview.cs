@@ -28,6 +28,9 @@ namespace MoviesAdmin.Models
 
         public string CreatedBy { get; set; } = string.Empty;
 
+        //TODO: Add CriticName using _UserNickname
+
+        [Display(Name = "Created On")]
         public DateOnly CreatedDate { get; set; }
     }
 }

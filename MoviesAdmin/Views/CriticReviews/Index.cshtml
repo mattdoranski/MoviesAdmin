@@ -4,30 +4,32 @@
     ViewData["Title"] = "Critic Reviews";
 }
 
-<h1>Critic Reviews</h1>
+<h1>My Reviews</h1>
 
-<p>
+@* <p>
     <a asp-action="Create" class="btn btn-primary">Create New</a>
-</p>
+</p> *@
 <table class="table">
     <thead>
         <tr>
+            <th></th>
             <th>@Html.DisplayNameFor(model => model.Movie)</th>
             <th>@Html.DisplayNameFor(model => model.Description)</th>
             <th>@Html.DisplayNameFor(model => model.Rating)</th>
-            <th>@Html.DisplayNameFor(model => model.CreatedBy)</th>
             <th>@Html.DisplayNameFor(model => model.CreatedDate)</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.OrderByDescending(item => item.CreatedDate))
         {
             <tr>
+                <td>
+                    <img src="@item.Movie.ImageUrl" alt="@item.Movie.Title" class="thumbnail" />
+                </td>
                 <td>@Html.DisplayFor(modelItem => item.Movie.Title)</td>
-                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td style="max-width: 400px">@Html.DisplayFor(modelItem => item.Description)</td>
                 <td>@Html.DisplayFor(modelItem => item.Rating)</td>
-                <td>@Html.DisplayFor(modelItem => item.CreatedBy)</td>
                 <td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
                 
                 @if (item.IsPublished)

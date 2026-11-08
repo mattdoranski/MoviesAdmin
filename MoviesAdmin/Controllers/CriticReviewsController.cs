@@ -12,6 +12,7 @@ public class CriticReviewsController : Controller
 
     // logged in user
     private string? _userId;
+    private string? _userNickname;
 
     public CriticReviewsController(MoviesAdminContext context)
     {
@@ -24,6 +25,7 @@ public class CriticReviewsController : Controller
     {
         base.OnActionExecuting(context);
         _userId = User.GetUserId();
+        _userNickname = User.GetNickname();
     }
 
     // GET: CriticReviews
