@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using MoviesAdmin;
 using MoviesAdmin.Models;
 
-[Authorize]
+[Authorize(Roles = "critic")]
 public class CriticReviewsController : Controller
 {
     private readonly MoviesAdminContext _context;
@@ -47,7 +47,7 @@ public class CriticReviewsController : Controller
 
         var criticReview = await _context.CriticReview
             .Include(c => c.Movie)
-            .FirstOrDefaultAsync(c => c.Id == id && (c.IsPublished || c.CreatedBy == _userId));
+            .FirstOrDefaultAsync(c => c.Id == id && (c.CreatedBy == _userId));
         if (criticReview == null)
         {
             return NotFound();
@@ -150,8 +150,6 @@ public class CriticReviewsController : Controller
 
             return RedirectToAction(nameof(Index));
         }
-
-        //TODO: Check if EDIT works for published reviews
 
         return View(criticReview);
     }
