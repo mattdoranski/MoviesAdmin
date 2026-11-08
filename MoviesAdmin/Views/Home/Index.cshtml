@@ -3,7 +3,24 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome to Film Lighthouse!</h1>
-    <h2><a class="fs-1" asp-controller="Movies" asp-action="Index">Browse</a> our library of films</h2>
-    <h2><a class="fs-1" asp-controller="Movies" asp-action="Create">Add</a> a movie to our list</h2>
+    <div class="mb-3">
+        <h1 class="display-4">Welcome to</h1> 
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="/images/FilmLighthouseBOLD.png" alt="FilmLighthouseLOGO" height="150"></a>
+    </div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <h2><a class="mb-3 fs-1" asp-controller="Movies" asp-action="Index">Browse</a> our library of films</h2>
+        @if (User.IsInRole("admin"))
+            {
+                <h2><a class="mb-3 fs-1" asp-controller="Movies" asp-action="Create">Add</a> a movie to our list</h2>
+            }
+    } 
+    else
+    {
+        <h2 class="nav-item">
+            <a class="mb-3 fs-1" asp-controller="Account" asp-action="Login">Please Login</a>
+        </h2>
+    }
+
+
 </div>
