@@ -42,6 +42,7 @@ public class MoviesController : Controller
             .Include(m => m.Genre)
             .Include(m => m.AudienceRating)
             .Include(m => m.Director)
+            .Include(m => m.CriticReview.Where(c => c.IsPublished))
             .FirstOrDefaultAsync(m => m.Id == id);
 
         if (movie == null)
